@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +10,7 @@ import Icon from '@/components/ui/icon';
 import OnboardingFlow from '@/components/OnboardingFlow';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProfile, setSelectedProfile] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -133,9 +135,9 @@ const Index = () => {
                   </h1>
                 </div>
                 <nav className="hidden md:flex items-center gap-6">
-                  <a href="#" className="text-sm font-medium hover:text-primary transition-colors">Профили</a>
-                  <a href="#" className="text-sm font-medium hover:text-primary transition-colors">Для агентств</a>
-                  <a href="#" className="text-sm font-medium hover:text-primary transition-colors">О платформе</a>
+                  <button onClick={() => navigate('/profiles')} className="text-sm font-medium hover:text-primary transition-colors">Профили</button>
+                  <button onClick={() => navigate('/agencies')} className="text-sm font-medium hover:text-primary transition-colors">Для агентств</button>
+                  <button onClick={() => navigate('/about')} className="text-sm font-medium hover:text-primary transition-colors">О платформе</button>
                   <Button className="gradient-purple text-white border-0" onClick={() => setShowOnboarding(true)}>
                     <Icon name="LogIn" size={16} className="mr-2" />
                     Войти
