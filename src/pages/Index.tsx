@@ -6,10 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import OnboardingFlow from '@/components/OnboardingFlow';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProfile, setSelectedProfile] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const animators = [
     {
@@ -111,6 +113,10 @@ const Index = () => {
 
   const selectedAnimator = selectedProfile ? animators.find(a => a.id === selectedProfile) : null;
 
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={() => setShowOnboarding(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {!selectedProfile ? (
@@ -130,7 +136,7 @@ const Index = () => {
                   <a href="#" className="text-sm font-medium hover:text-primary transition-colors">Профили</a>
                   <a href="#" className="text-sm font-medium hover:text-primary transition-colors">Для агентств</a>
                   <a href="#" className="text-sm font-medium hover:text-primary transition-colors">О платформе</a>
-                  <Button className="gradient-purple text-white border-0">
+                  <Button className="gradient-purple text-white border-0" onClick={() => setShowOnboarding(true)}>
                     <Icon name="LogIn" size={16} className="mr-2" />
                     Войти
                   </Button>
@@ -253,11 +259,11 @@ const Index = () => {
                 Станьте частью профессионального сообщества event-индустрии
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary" className="text-lg h-14 px-8 rounded-full">
+                <Button size="lg" variant="secondary" className="text-lg h-14 px-8 rounded-full" onClick={() => setShowOnboarding(true)}>
                   <Icon name="Sparkles" size={20} className="mr-2" />
                   Я аниматор
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg h-14 px-8 rounded-full bg-white/10 text-white border-white/30 hover:bg-white/20">
+                <Button size="lg" variant="outline" className="text-lg h-14 px-8 rounded-full bg-white/10 text-white border-white/30 hover:bg-white/20" onClick={() => setShowOnboarding(true)}>
                   <Icon name="Building2" size={20} className="mr-2" />
                   Я агентство
                 </Button>
