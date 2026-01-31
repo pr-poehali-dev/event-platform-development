@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import OnboardingFlow from '@/components/OnboardingFlow';
 import AuthModal from '@/components/AuthModal';
+import FAQ from '@/components/FAQ';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -272,6 +273,8 @@ const Index = () => {
               </div>
             </div>
           </section>
+
+          <FAQ />
 
           <section className="py-16 px-4 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500">
             <div className="container mx-auto max-w-4xl text-center text-white">
