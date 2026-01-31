@@ -10,6 +10,7 @@ import Icon from '@/components/ui/icon';
 import OnboardingFlow from '@/components/OnboardingFlow';
 import AuthModal from '@/components/AuthModal';
 import FAQ from '@/components/FAQ';
+import ChatPanel from '@/components/ChatPanel';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'login' | 'register'>('login');
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatRecipient, setChatRecipient] = useState<any>(null);
 
   const animators = [
     {
@@ -359,7 +362,20 @@ const Index = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <Button className="gradient-purple text-white">
+                    <Button 
+                      className="gradient-purple text-white"
+                      onClick={() => {
+                        setChatRecipient({
+                          id: selectedAnimator?.id.toString(),
+                          name: selectedAnimator?.name,
+                          avatar: selectedAnimator?.avatar,
+                          role: selectedAnimator?.specialization,
+                          status: 'online',
+                          responseTime: 'Обычно отвечает за 2 часа'
+                        });
+                        setIsChatOpen(true);
+                      }}
+                    >
                       <Icon name="MessageCircle" size={18} className="mr-2" />
                       Написать
                     </Button>
@@ -458,6 +474,15 @@ const Index = () => {
         onClose={() => setShowAuthModal(false)}
         defaultTab={authDefaultTab}
       />
+
+      {chatRecipient && (
+        <ChatPanel
+          isOpen={isChatOpen}
+          onClose={() => setIsChatOpen(false)}
+          recipient={chatRecipient}
+          userType="customer"
+        />
+      )}
     </div>
   );
 };
