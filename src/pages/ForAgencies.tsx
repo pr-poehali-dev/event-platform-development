@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { Progress } from '@/components/ui/progress';
+import Header from '@/components/Header';
 
 const ForAgencies = () => {
   const [showDashboard, setShowDashboard] = useState(false);
@@ -49,6 +50,7 @@ const ForAgencies = () => {
   if (showDashboard) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+        <Header />
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -250,6 +252,7 @@ const ForAgencies = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      <Header />
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16 animate-fade-in">

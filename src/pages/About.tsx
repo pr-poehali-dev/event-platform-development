@@ -3,10 +3,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Icon from '@/components/ui/icon';
+import Header from '@/components/Header';
 
 const About = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      <Header />
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-20 animate-fade-in">

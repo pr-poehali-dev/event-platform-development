@@ -108,7 +108,7 @@
 
 @layer utilities {
   .gradient-purple {
-    background: linear-gradient(135deg, #9b87f5 0%, #d946ef 100%);
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%);
   }
 
   .gradient-orange {
@@ -117,5 +117,34 @@
 
   .gradient-blue {
     background: linear-gradient(135deg, #0ea5e9 0%, #9b87f5 100%);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
   }
 }

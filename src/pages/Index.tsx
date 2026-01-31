@@ -8,12 +8,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import OnboardingFlow from '@/components/OnboardingFlow';
+import AuthModal from '@/components/AuthModal';
 
 const Index = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProfile, setSelectedProfile] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authDefaultTab, setAuthDefaultTab] = useState<'login' | 'register'>('login');
 
   const animators = [
     {
@@ -138,9 +141,25 @@ const Index = () => {
                   <button onClick={() => navigate('/profiles')} className="text-sm font-medium hover:text-primary transition-colors">Профили</button>
                   <button onClick={() => navigate('/agencies')} className="text-sm font-medium hover:text-primary transition-colors">Для агентств</button>
                   <button onClick={() => navigate('/about')} className="text-sm font-medium hover:text-primary transition-colors">О платформе</button>
-                  <Button className="gradient-purple text-white border-0" onClick={() => setShowOnboarding(true)}>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                      setAuthDefaultTab('login');
+                      setShowAuthModal(true);
+                    }}
+                  >
                     <Icon name="LogIn" size={16} className="mr-2" />
                     Войти
+                  </Button>
+                  <Button 
+                    className="gradient-purple text-white border-0" 
+                    onClick={() => {
+                      setAuthDefaultTab('register');
+                      setShowAuthModal(true);
+                    }}
+                  >
+                    <Icon name="Sparkles" size={16} className="mr-2" />
+                    Создать профиль
                   </Button>
                 </nav>
                 <Button variant="ghost" size="icon" className="md:hidden">
@@ -430,6 +449,12 @@ const Index = () => {
           </div>
         </div>
       )}
+
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        defaultTab={authDefaultTab}
+      />
     </div>
   );
 };

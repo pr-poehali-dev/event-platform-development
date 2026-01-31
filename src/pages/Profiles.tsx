@@ -11,6 +11,7 @@ import Icon from '@/components/ui/icon';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { StatusIndicator, StatusCard, StatusBadge } from '@/components/StatusIndicator';
 import type { UserStatus } from '@/components/StatusIndicator';
+import Header from '@/components/Header';
 
 const Profiles = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -240,6 +241,7 @@ const Profiles = () => {
   if (selectedProfile && selectedAnimator) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+        <Header />
         <div className="container mx-auto max-w-6xl px-4 py-8">
           <Button
             variant="ghost"
@@ -500,6 +502,7 @@ const Profiles = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      <Header />
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold mb-3">Каталог профессионалов</h1>
