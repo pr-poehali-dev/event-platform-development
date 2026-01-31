@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import Icon from '@/components/ui/icon';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { StatusIndicator, StatusCard, StatusBadge } from '@/components/StatusIndicator';
+import type { UserStatus } from '@/components/StatusIndicator';
 
 const Profiles = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +37,8 @@ const Profiles = () => {
       price: '3000₽/час',
       city: 'Москва',
       verified: true,
+      status: 'available' as const,
+      responseTime: 'Отвечает в течение 10 минут',
       about: 'Профессиональный аниматор с опытом работы на детских праздниках. Работаю с детьми от 3 до 10 лет. Создаю яркие незабываемые моменты для каждого ребёнка.',
       portfolio: [
         'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400',
@@ -60,6 +64,8 @@ const Profiles = () => {
       price: '4000₽/час',
       city: 'Санкт-Петербург',
       verified: true,
+      status: 'busy' as const,
+      responseTime: 'На выступлении до 20:00',
       about: 'Профессиональный фокусник и иллюзионист. Создаю незабываемые шоу для детей и взрослых.',
       portfolio: [
         'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400',
@@ -82,6 +88,8 @@ const Profiles = () => {
       price: '2500₽/час',
       city: 'Москва',
       verified: true,
+      status: 'available' as const,
+      responseTime: 'Отвечает в течение 5 минут',
       about: 'Художник аква-грима. Использую только профессиональные и безопасные материалы.',
       portfolio: [
         'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400',
@@ -104,6 +112,8 @@ const Profiles = () => {
       price: '5000₽/час',
       city: 'Москва',
       verified: false,
+      status: 'later' as const,
+      responseTime: 'Обычно отвечает в течение 2 часов',
       about: 'Веду детские и семейные праздники. Интерактивные программы и весёлые конкурсы.',
       portfolio: [
         'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400',
@@ -417,6 +427,31 @@ const Profiles = () => {
 
             <div className="space-y-6">
               <Card className="border-2 sticky top-24 animate-fade-in">
+                <CardContent className="pt-6 space-y-4">
+                  <StatusCard 
+                    status={selectedAnimator.status as UserStatus}
+                    responseTime={selectedAnimator.responseTime}
+                  />
+                  
+                  <div className="space-y-2">
+                    <Button 
+                      className="w-full gradient-purple text-white"
+                      disabled={selectedAnimator.status === 'offline'}
+                    >
+                      <Icon name="MessageCircle" size={16} className="mr-2" />
+                      {selectedAnimator.status === 'available' ? 'Написать сейчас' : 
+                       selectedAnimator.status === 'busy' ? 'Написать (отвечу позже)' :
+                       selectedAnimator.status === 'later' ? 'Оставить сообщение' : 'Написать'}
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                      <Icon name="Phone" size={16} className="mr-2" />
+                      Позвонить
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 sticky top-[420px] animate-fade-in">
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-bold mb-4 text-center">QR-код для отзывов</h3>
                   <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-6 rounded-2xl mb-4">
@@ -524,6 +559,9 @@ const Profiles = () => {
                       <AvatarImage src={animator.avatar} className="object-cover" />
                       <AvatarFallback>{animator.name.slice(0, 2)}</AvatarFallback>
                     </Avatar>
+                    <div className="absolute top-3 left-3">
+                      <StatusBadge status={animator.status as UserStatus} compact />
+                    </div>
                     <div className="absolute top-3 right-3 flex gap-2">
                       {animator.verified && (
                         <Badge className="bg-white/90 text-foreground border-0 backdrop-blur-sm">
@@ -538,8 +576,17 @@ const Profiles = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                   <CardContent className="pt-4">
-                    <h4 className="font-bold text-lg mb-1">{animator.name}</h4>
-                    <p className="text-sm text-muted-foreground mb-3">{animator.specialization}</p>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h4 className="font-bold text-lg mb-1">{animator.name}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">{animator.specialization}</p>
+                      </div>
+                    </div>
+                    <StatusIndicator 
+                      status={animator.status as UserStatus} 
+                      size="sm" 
+                      className="mb-3"
+                    />
                     <div className="flex items-center gap-2 mb-3 flex-wrap">
                       <Badge variant="secondary" className="text-xs">
                         <Icon name="MapPin" size={12} className="mr-1" />
