@@ -21,7 +21,9 @@ const ArtistProfile = () => {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout 
+      onboardingActive={false}
+    >
       <div className="max-w-5xl animate-fade-in space-y-6">
         <div className="flex items-center justify-between">
           <div>

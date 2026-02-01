@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import OnboardingTooltip from './OnboardingTooltip';
 
@@ -28,6 +28,8 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [spotlightRect, setSpotlightRect] = useState<DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [isNavigating, setIsNavigating] = useState(false);
+  const navigationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const steps: OnboardingStep[] = [
     {
@@ -202,36 +204,79 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
   }, [currentStep]);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive || !currentStep) return;
 
-    if (currentStep?.navigateTo && location.pathname !== currentStep.navigateTo) {
+    if (currentStep.navigateTo && location.pathname !== currentStep.navigateTo) {
+      console.log(`[Onboarding] Need to navigate from ${location.pathname} to ${currentStep.navigateTo}`);
+      setIsNavigating(true);
       navigate(currentStep.navigateTo);
+      
+      if (navigationTimerRef.current) {
+        clearTimeout(navigationTimerRef.current);
+      }
+      
+      navigationTimerRef.current = setTimeout(() => {
+        setIsNavigating(false);
+      }, 800);
+      
       return;
     }
 
-    const timeoutId = setTimeout(() => {
-      updateSpotlight();
-    }, 400);
+    if (isNavigating) {
+      console.log('[Onboarding] Waiting for navigation to complete...');
+      return;
+    }
+
+    console.log(`[Onboarding] Step ${currentStepIndex + 1}: Looking for target "${currentStep.target}"`);
+
+    let retryCount = 0;
+    const maxRetries = 30;
+
+    const tryUpdateSpotlight = () => {
+      const targetElement = document.querySelector(currentStep.target);
+      
+      if (targetElement) {
+        console.log(`[Onboarding] ✓ Target found on attempt ${retryCount + 1}`);
+        updateSpotlight();
+        return true;
+      } else {
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          console.warn(`[Onboarding] ✗ Target not found after ${maxRetries} attempts: ${currentStep.target}`);
+        }
+        return false;
+      }
+    };
+
+    const initialTimeout = setTimeout(() => {
+      tryUpdateSpotlight();
+    }, 500);
 
     const intervalId = setInterval(() => {
-      const targetElement = document.querySelector(currentStep.target);
-      if (targetElement) {
-        updateSpotlight();
+      if (retryCount < maxRetries) {
+        const found = tryUpdateSpotlight();
+        if (found) {
+          clearInterval(intervalId);
+        }
+      } else {
+        clearInterval(intervalId);
       }
-    }, 500);
+    }, 200);
 
     window.addEventListener('resize', updateSpotlight);
     window.addEventListener('scroll', updateSpotlight);
 
     return () => {
-      clearTimeout(timeoutId);
+      clearTimeout(initialTimeout);
       clearInterval(intervalId);
       window.removeEventListener('resize', updateSpotlight);
       window.removeEventListener('scroll', updateSpotlight);
     };
-  }, [isActive, currentStep, currentStepIndex, location.pathname, navigate, updateSpotlight]);
+  }, [isActive, currentStep, currentStepIndex, location.pathname, navigate, updateSpotlight, isNavigating]);
 
   const handleNext = () => {
+    console.log(`[Onboarding] Moving from step ${currentStepIndex + 1} to ${currentStepIndex + 2}`);
+    
     if (currentStep.primaryAction.onClick) {
       currentStep.primaryAction.onClick();
     }
@@ -239,6 +284,7 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
+      console.log('[Onboarding] Completing tour');
       handleComplete();
     }
   };
@@ -254,6 +300,11 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
   };
 
   if (!isActive || !currentStep) return null;
+
+  if (isNavigating) {
+    console.log('[Onboarding] Rendering: Navigation in progress, hiding UI temporarily');
+    return null;
+  }
 
   return (
     <>

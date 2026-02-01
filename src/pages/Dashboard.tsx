@@ -67,7 +67,11 @@ const Dashboard = () => {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout 
+      onboardingActive={showTour}
+      onOnboardingComplete={() => setShowTour(false)}
+      onOnboardingSkip={() => setShowTour(false)}
+    >
       <div className="space-y-6 animate-fade-in">
         <div>
           <h2 className="text-3xl font-bold mb-2">Привет, Анна! 👋</h2>
@@ -219,17 +223,12 @@ const Dashboard = () => {
         onStart={() => {
           setShowWelcome(false);
           setShowTour(true);
+          localStorage.setItem('onboarding_active', 'true');
         }}
         onSkip={() => {
           setShowWelcome(false);
           localStorage.setItem('onboarding_completed', 'true');
         }}
-      />
-
-      <OnboardingTour
-        isActive={showTour}
-        onComplete={() => setShowTour(false)}
-        onSkip={() => setShowTour(false)}
       />
     </DashboardLayout>
   );
