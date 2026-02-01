@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
+import OnboardingWelcome from '@/components/OnboardingWelcome';
+import OnboardingTour from '@/components/OnboardingTour';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -6,6 +9,18 @@ import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 
 const Dashboard = () => {
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    const isOnboardingCompleted = localStorage.getItem('onboarding_completed') === 'true';
+    const isNewUser = localStorage.getItem('user_registered') === 'true';
+
+    if (isNewUser && !isOnboardingCompleted) {
+      setShowWelcome(true);
+      localStorage.removeItem('user_registered');
+    }
+  }, []);
   const upcomingEvents = [
     {
       id: 1,
@@ -155,7 +170,7 @@ const Dashboard = () => {
 
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Советы для роста</h3>
-            <div className="space-y-3">
+            <div className="space-y-3" data-onboarding="tips-card">
               {tips.map((tip, index) => (
                 <Card key={index} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-4">
@@ -197,6 +212,25 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      <OnboardingWelcome
+        isOpen={showWelcome}
+        userName="Анна"
+        onStart={() => {
+          setShowWelcome(false);
+          setShowTour(true);
+        }}
+        onSkip={() => {
+          setShowWelcome(false);
+          localStorage.setItem('onboarding_completed', 'true');
+        }}
+      />
+
+      <OnboardingTour
+        isActive={showTour}
+        onComplete={() => setShowTour(false)}
+        onSkip={() => setShowTour(false)}
+      />
     </DashboardLayout>
   );
 };

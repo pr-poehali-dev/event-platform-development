@@ -40,7 +40,7 @@ const ArtistProfile = () => {
         <Tabs defaultValue="general" className="space-y-4">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto">
             <TabsTrigger value="general">Основное</TabsTrigger>
-            <TabsTrigger value="portfolio">Портфолио</TabsTrigger>
+            <TabsTrigger value="portfolio" data-onboarding="portfolio-tab">Портфолио</TabsTrigger>
             <TabsTrigger value="services">Услуги</TabsTrigger>
             <TabsTrigger value="preview">Предпросмотр</TabsTrigger>
           </TabsList>
