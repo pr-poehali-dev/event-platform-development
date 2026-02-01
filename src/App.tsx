@@ -8,6 +8,10 @@ import Index from "./pages/Index";
 import Profiles from "./pages/Profiles";
 import ForAgencies from "./pages/ForAgencies";
 import About from "./pages/About";
+import Dashboard from "./pages/Dashboard";
+import ArtistProfile from "./pages/ArtistProfile";
+import Messages from "./pages/Messages";
+import Reviews from "./pages/Reviews";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +27,12 @@ const App = () => (
           <Route path="/profiles" element={<Profiles />} />
           <Route path="/agencies" element={<ForAgencies />} />
           <Route path="/about" element={<About />} />
+          
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/profile" element={<ArtistProfile />} />
+          <Route path="/dashboard/messages" element={<Messages />} />
+          <Route path="/dashboard/reviews" element={<Reviews />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

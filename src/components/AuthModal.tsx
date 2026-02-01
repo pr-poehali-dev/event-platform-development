@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [userRole, setUserRole] = useState<'artist' | 'agency'>('artist');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +42,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }: Aut
     setTimeout(() => {
       setIsLoading(false);
       onClose();
+      navigate('/dashboard');
     }, 1500);
   };
 
@@ -49,7 +52,8 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }: Aut
     
     setTimeout(() => {
       setIsLoading(false);
-      setActiveTab('login');
+      onClose();
+      navigate('/dashboard');
     }, 1500);
   };
 
