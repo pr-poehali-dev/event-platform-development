@@ -31,6 +31,7 @@ const ArtistProfile = () => {
           <Button
             onClick={() => setIsEditing(!isEditing)}
             className={isEditing ? '' : 'gradient-purple text-white'}
+            data-onboarding="edit-button"
           >
             <Icon name={isEditing ? 'X' : 'Edit'} size={18} className="mr-2" />
             {isEditing ? 'Отменить' : 'Редактировать'}

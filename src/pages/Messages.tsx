@@ -107,7 +107,7 @@ const Messages = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2" data-onboarding="messages-list">
                   {filteredChats.map((chat) => (
                     <div
                       key={chat.id}

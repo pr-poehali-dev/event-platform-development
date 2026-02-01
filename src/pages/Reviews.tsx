@@ -120,7 +120,7 @@ const Reviews = () => {
                 ))}
               </div>
 
-              <div className="mt-6 pt-6 border-t">
+              <div className="mt-6 pt-6 border-t" data-onboarding="qr-code">
                 <h4 className="font-semibold mb-3">QR-код для отзывов</h4>
                 <div className="bg-white p-4 rounded-xl border">
                   <img

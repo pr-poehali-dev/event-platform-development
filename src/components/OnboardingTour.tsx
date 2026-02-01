@@ -41,70 +41,101 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
 • Календарь — график работы
 
 Можно свернуть, нажав на стрелку`,
-      emoji: '💬',
-      primaryAction: { label: 'Далее' },
+      emoji: '🎯',
+      primaryAction: { label: 'Понятно, далее' },
       tooltipPosition: 'right',
     },
     {
-      id: 'profile',
+      id: 'profile-button',
       target: '[href="/dashboard/profile"]',
-      title: 'Начните с профиля',
-      description: `Это первое, что видят клиенты.
-Добавьте фото, опишите свои услуги и укажите цены.
+      title: 'Мой профиль — ваша визитка',
+      description: `Здесь вы управляете всей информацией о себе.
 
-Чем полнее профиль — тем больше заказов 📈`,
+Клиенты смотрят профиль перед заказом — давайте посмотрим, что там важно! 👀`,
       emoji: '👤',
-      primaryAction: { label: 'Заполнить профиль' },
+      primaryAction: { label: 'Открыть профиль' },
       navigateTo: '/dashboard/profile',
       tooltipPosition: 'right',
+    },
+    {
+      id: 'edit-profile',
+      target: '[data-onboarding="edit-button"]',
+      title: 'Заполните информацию о себе',
+      description: `Имя, специализация, опыт, цены — всё это влияет на количество заказов.
+
+Чем полнее профиль — тем больше доверия у клиентов! 📈`,
+      emoji: '✏️',
+      primaryAction: { label: 'Понял, далее' },
+      tooltipPosition: 'left',
     },
     {
       id: 'portfolio',
       target: '[data-onboarding="portfolio-tab"]',
       title: 'Покажите свою работу',
-      description: `Портфолио — это ваша сила.
-Добавьте 5-10 фото с мероприятий, чтобы клиенты увидели, как вы работаете.
+      description: `Портфолио — это ваша сила!
+Добавьте 5-10 фото с мероприятий.
 
-Профили с фото получают в 3 раза больше запросов!`,
-      emoji: '📸',
-      primaryAction: { label: 'Добавить фото' },
+Профили с фото получают в 3 раза больше запросов! 📸`,
+      emoji: '🎨',
+      primaryAction: { label: 'Интересно, далее' },
       tooltipPosition: 'bottom',
     },
     {
-      id: 'reviews',
+      id: 'reviews-button',
       target: '[href="/dashboard/reviews"]',
-      title: 'Собирайте отзывы легко',
-      description: `Покажите клиентам QR-код после мероприятия — они оставят отзыв без регистрации.
-
-Рейтинг 4.5+ = топ выдачи в поиске 🚀`,
+      title: 'Отзывы — ваша репутация',
+      description: `Хорошие отзывы = больше заказов.
+Давайте посмотрим, как их собирать! ⭐`,
       emoji: '⭐',
-      primaryAction: { label: 'Посмотреть' },
+      primaryAction: { label: 'Посмотреть отзывы' },
       navigateTo: '/dashboard/reviews',
       tooltipPosition: 'right',
     },
     {
-      id: 'messages',
-      target: '[href="/dashboard/messages"]',
-      title: 'Клиенты уже пишут вам!',
-      description: `Здесь вся переписка с заказчиками.
-Отвечайте быстро — это повышает ваш рейтинг в системе.
+      id: 'qr-code',
+      target: '[data-onboarding="qr-code"]',
+      title: 'QR-код для отзывов',
+      description: `Покажите этот QR-код клиентам после мероприятия — они оставят отзыв за 30 секунд.
 
-Средний ответ за 2 часа = +20% к просмотрам`,
+Без регистрации, просто и быстро! 🚀`,
+      emoji: '📱',
+      primaryAction: { label: 'Круто, далее' },
+      tooltipPosition: 'left',
+    },
+    {
+      id: 'messages-button',
+      target: '[href="/dashboard/messages"]',
+      title: 'Общайтесь с клиентами',
+      description: `Здесь вся переписка с заказчиками.
+Отвечайте быстро — это повышает рейтинг! 💬`,
       emoji: '💬',
       primaryAction: { label: 'Посмотреть чаты' },
       navigateTo: '/dashboard/messages',
       tooltipPosition: 'right',
     },
     {
+      id: 'messages-list',
+      target: '[data-onboarding="messages-list"]',
+      title: 'Все чаты в одном месте',
+      description: `Список диалогов с заказчиками.
+Непрочитанные сообщения подсвечены.
+
+Средний ответ за 2 часа = +20% к просмотрам профиля! ⚡`,
+      emoji: '📬',
+      primaryAction: { label: 'Понятно, далее' },
+      tooltipPosition: 'right',
+    },
+    {
       id: 'complete',
       target: '[data-onboarding="tips-card"]',
-      title: 'Готово! Вы разобрались',
-      description: `Теперь вы знаете, где что находится.
-Если забудете — всегда можно вернуться к подсказкам в настройках.
+      title: 'Отлично! Вы готовы к работе',
+      description: `Теперь вы знаете все ключевые разделы!
 
-🚀 Первый шаг: заполните профиль на 100%`,
+🚀 Первый шаг: заполните профиль на 100%
+💡 Добавьте 5-10 фото в портфолио
+⭐ Попросите первых клиентов оставить отзывы`,
       emoji: '🎉',
-      primaryAction: { label: 'В личный кабинет' },
+      primaryAction: { label: 'Начать работу!' },
       navigateTo: '/dashboard',
       tooltipPosition: 'bottom',
     },
@@ -175,17 +206,26 @@ const OnboardingTour = ({ isActive, onComplete, onSkip }: OnboardingTourProps) =
 
     if (currentStep?.navigateTo && location.pathname !== currentStep.navigateTo) {
       navigate(currentStep.navigateTo);
+      return;
     }
 
     const timeoutId = setTimeout(() => {
       updateSpotlight();
-    }, 300);
+    }, 400);
+
+    const intervalId = setInterval(() => {
+      const targetElement = document.querySelector(currentStep.target);
+      if (targetElement) {
+        updateSpotlight();
+      }
+    }, 500);
 
     window.addEventListener('resize', updateSpotlight);
     window.addEventListener('scroll', updateSpotlight);
 
     return () => {
       clearTimeout(timeoutId);
+      clearInterval(intervalId);
       window.removeEventListener('resize', updateSpotlight);
       window.removeEventListener('scroll', updateSpotlight);
     };
