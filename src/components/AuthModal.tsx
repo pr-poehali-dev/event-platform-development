@@ -53,7 +53,6 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }: Aut
     setTimeout(() => {
       setIsLoading(false);
       onClose();
-      localStorage.setItem('user_registered', 'true');
       navigate('/dashboard');
     }, 1500);
   };

@@ -1,6 +1,5 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode } from 'react';
 import Sidebar from '@/components/Sidebar';
-import OnboardingTour from '@/components/OnboardingTour';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -15,32 +14,9 @@ import Icon from '@/components/ui/icon';
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  onboardingActive?: boolean;
-  onOnboardingComplete?: () => void;
-  onOnboardingSkip?: () => void;
 }
 
-const DashboardLayout = ({ 
-  children, 
-  onboardingActive = false,
-  onOnboardingComplete,
-  onOnboardingSkip 
-}: DashboardLayoutProps) => {
-  const [showOnboarding, setShowOnboarding] = useState(onboardingActive);
-
-  useEffect(() => {
-    setShowOnboarding(onboardingActive);
-  }, [onboardingActive]);
-
-  useEffect(() => {
-    const isOnboardingCompleted = localStorage.getItem('onboarding_completed') === 'true';
-    const onboardingState = localStorage.getItem('onboarding_active') === 'true';
-    
-    if (onboardingState && !isOnboardingCompleted) {
-      setShowOnboarding(true);
-    }
-  }, []);
-
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />
@@ -112,22 +88,6 @@ const DashboardLayout = ({
           {children}
         </main>
       </div>
-
-      <OnboardingTour
-        isActive={showOnboarding}
-        onComplete={() => {
-          setShowOnboarding(false);
-          localStorage.removeItem('onboarding_active');
-          localStorage.setItem('onboarding_completed', 'true');
-          if (onOnboardingComplete) onOnboardingComplete();
-        }}
-        onSkip={() => {
-          setShowOnboarding(false);
-          localStorage.removeItem('onboarding_active');
-          localStorage.setItem('onboarding_completed', 'true');
-          if (onOnboardingSkip) onOnboardingSkip();
-        }}
-      />
     </div>
   );
 };

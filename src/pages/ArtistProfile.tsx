@@ -21,9 +21,7 @@ const ArtistProfile = () => {
   ];
 
   return (
-    <DashboardLayout 
-      onboardingActive={false}
-    >
+    <DashboardLayout>
       <div className="max-w-5xl animate-fade-in space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -33,7 +31,6 @@ const ArtistProfile = () => {
           <Button
             onClick={() => setIsEditing(!isEditing)}
             className={isEditing ? '' : 'gradient-purple text-white'}
-            data-onboarding="edit-button"
           >
             <Icon name={isEditing ? 'X' : 'Edit'} size={18} className="mr-2" />
             {isEditing ? 'Отменить' : 'Редактировать'}
@@ -43,7 +40,7 @@ const ArtistProfile = () => {
         <Tabs defaultValue="general" className="space-y-4">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto">
             <TabsTrigger value="general">Основное</TabsTrigger>
-            <TabsTrigger value="portfolio" data-onboarding="portfolio-tab">Портфолио</TabsTrigger>
+            <TabsTrigger value="portfolio">Портфолио</TabsTrigger>
             <TabsTrigger value="services">Услуги</TabsTrigger>
             <TabsTrigger value="preview">Предпросмотр</TabsTrigger>
           </TabsList>

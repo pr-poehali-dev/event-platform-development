@@ -76,9 +76,7 @@ const Messages = () => {
   const totalUnread = chats.reduce((sum, chat) => sum + chat.unread, 0);
 
   return (
-    <DashboardLayout 
-      onboardingActive={false}
-    >
+    <DashboardLayout>
       <div className="space-y-6 animate-fade-in">
         <div className="flex items-center justify-between">
           <div>
@@ -109,7 +107,7 @@ const Messages = () => {
                   />
                 </div>
 
-                <div className="space-y-2" data-onboarding="messages-list">
+                <div className="space-y-2">
                   {filteredChats.map((chat) => (
                     <div
                       key={chat.id}
