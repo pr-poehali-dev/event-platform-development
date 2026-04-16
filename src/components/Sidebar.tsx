@@ -26,6 +26,7 @@ const Sidebar = () => {
     { icon: 'BookOpen', label: 'База знаний', path: '/dashboard/knowledge', badge: null },
     { icon: 'Briefcase', label: 'Эвента Про', path: '/dashboard/pro', badge: null },
     { icon: 'Headphones', label: 'Поддержка', path: '/dashboard/support', badge: null },
+    { icon: 'FileText', label: 'Документы', path: '/dashboard/documents', badge: null },
   ];
 
   const isActive = (path: string) => location.pathname === path;

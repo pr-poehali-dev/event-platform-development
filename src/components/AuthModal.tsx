@@ -415,6 +415,12 @@ export default function AuthModal({ isOpen, onClose, defaultTab = 'login' }: Aut
                       )}
                     </Button>
                   </form>
+                  <p className="text-xs text-muted-foreground text-center -mt-2">
+                    Регистрируясь, я подтверждаю, что согласен со всеми{' '}
+                    <a href="/dashboard/documents" className="text-primary underline hover:opacity-80" target="_blank" rel="noreferrer">
+                      правилами платформы
+                    </a>
+                  </p>
 
                   <div className="text-center text-xs text-muted-foreground">
                     Нажимая "Создать профиль", вы соглашаетесь с{' '}
