@@ -12,7 +12,7 @@ const Sidebar = () => {
   const navigationItems = [
     { icon: 'Home', label: 'Главная', path: '/dashboard', badge: null },
     { icon: 'User', label: 'Мой профиль', path: '/dashboard/profile', badge: null },
-    { icon: 'MessageCircle', label: 'Сообщения', path: '/dashboard/messages', badge: 3 },
+    { icon: 'MessageCircle', label: 'Чаты', path: '/dashboard/messages', badge: 3 },
     { icon: 'Calendar', label: 'Календарь', path: '/dashboard/calendar', badge: null },
     { icon: 'Star', label: 'Отзывы', path: '/dashboard/reviews', badge: null },
     { icon: 'Trophy', label: 'Рейтинг', path: '/dashboard/rating', badge: null },
