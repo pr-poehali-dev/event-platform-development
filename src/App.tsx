@@ -14,6 +14,7 @@ import Messages from "./pages/Messages";
 import Reviews from "./pages/Reviews";
 import News from "./pages/News";
 import Rating from "./pages/Rating";
+import Orders from "./pages/Orders";
 import NewsArticle from "./pages/NewsArticle";
 import NotFound from "./pages/NotFound";
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/dashboard/messages" element={<Messages />} />
           <Route path="/dashboard/reviews" element={<Reviews />} />
           <Route path="/dashboard/rating" element={<Rating />} />
+          <Route path="/dashboard/orders" element={<Orders />} />
           <Route path="/dashboard/news" element={<News />} />
           <Route path="/dashboard/news/:id" element={<NewsArticle />} />
           

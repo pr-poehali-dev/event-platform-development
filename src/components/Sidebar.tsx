@@ -16,6 +16,7 @@ const Sidebar = () => {
     { icon: 'Calendar', label: 'Календарь', path: '/dashboard/calendar', badge: null },
     { icon: 'Star', label: 'Отзывы', path: '/dashboard/reviews', badge: null },
     { icon: 'Trophy', label: 'Рейтинг', path: '/dashboard/rating', badge: null },
+    { icon: 'ClipboardList', label: 'Заказы', path: '/dashboard/orders', badge: null },
     { icon: 'Newspaper', label: 'Новости', path: '/dashboard/news', badge: null },
     { icon: 'BarChart3', label: 'Статистика', path: '/dashboard/stats', badge: null },
     { icon: 'Settings', label: 'Настройки', path: '/dashboard/settings', badge: null },
