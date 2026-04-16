@@ -16,6 +16,7 @@ import News from "./pages/News";
 import Rating from "./pages/Rating";
 import Orders from "./pages/Orders";
 import CalendarPage from "./pages/CalendarPage";
+import Support from "./pages/Support";
 import NewsArticle from "./pages/NewsArticle";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/dashboard/rating" element={<Rating />} />
           <Route path="/dashboard/orders" element={<Orders />} />
           <Route path="/dashboard/calendar" element={<CalendarPage />} />
+          <Route path="/dashboard/support" element={<Support />} />
           <Route path="/dashboard/news" element={<News />} />
           <Route path="/dashboard/news/:id" element={<NewsArticle />} />
           
