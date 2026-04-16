@@ -15,6 +15,7 @@ const Sidebar = () => {
     { icon: 'MessageCircle', label: 'Сообщения', path: '/dashboard/messages', badge: 3 },
     { icon: 'Calendar', label: 'Календарь', path: '/dashboard/calendar', badge: null },
     { icon: 'Star', label: 'Отзывы', path: '/dashboard/reviews', badge: null },
+    { icon: 'Trophy', label: 'Рейтинг', path: '/dashboard/rating', badge: null },
     { icon: 'Newspaper', label: 'Новости', path: '/dashboard/news', badge: null },
     { icon: 'BarChart3', label: 'Статистика', path: '/dashboard/stats', badge: null },
     { icon: 'Settings', label: 'Настройки', path: '/dashboard/settings', badge: null },
