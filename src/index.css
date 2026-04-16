@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 15%;
+    --background: 36 33% 97%;
+    --foreground: 25 20% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 15%;
+    --card-foreground: 25 20% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 15%;
+    --popover-foreground: 25 20% 18%;
 
-    --primary: 271 81% 76%;
+    --primary: 25 65% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 328 86% 70%;
+    --secondary: 15 55% 62%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
+    --muted: 30 20% 93%;
+    --muted-foreground: 25 10% 48%;
 
-    --accent: 199 89% 48%;
+    --accent: 195 45% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 271 81% 76%;
+    --border: 30 15% 87%;
+    --input: 30 15% 87%;
+    --ring: 25 65% 48%;
 
     --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 36 25% 96%;
+    --sidebar-foreground: 25 15% 28%;
+    --sidebar-primary: 25 20% 15%;
+    --sidebar-primary-foreground: 36 25% 96%;
+    --sidebar-accent: 30 20% 91%;
+    --sidebar-accent-foreground: 25 20% 15%;
+    --sidebar-border: 30 15% 88%;
+    --sidebar-ring: 25 65% 48%;
   }
 
   .dark {
@@ -108,15 +108,15 @@
 
 @layer utilities {
   .gradient-purple {
-    background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%);
+    background: linear-gradient(135deg, #c97941 0%, #d4865a 50%, #b5694a 100%);
   }
 
   .gradient-orange {
-    background: linear-gradient(135deg, #f97316 0%, #ea384c 100%);
+    background: linear-gradient(135deg, #c97941 0%, #b5694a 100%);
   }
 
   .gradient-blue {
-    background: linear-gradient(135deg, #0ea5e9 0%, #9b87f5 100%);
+    background: linear-gradient(135deg, #4a8fa8 0%, #c97941 100%);
   }
 
   .animate-fade-in {
