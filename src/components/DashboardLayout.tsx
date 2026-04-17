@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import Sidebar from '@/components/Sidebar';
+import NotificationsPanel from '@/components/NotificationsPanel';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,12 +29,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             </div>
 
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="relative">
-                <Icon name="Bell" size={20} />
-                <Badge className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center p-0 gradient-purple text-white text-xs border-0">
-                  2
-                </Badge>
-              </Button>
+              <NotificationsPanel />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

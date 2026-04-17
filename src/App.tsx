@@ -18,6 +18,7 @@ import Orders from "./pages/Orders";
 import CalendarPage from "./pages/CalendarPage";
 import Support from "./pages/Support";
 import Documents from "./pages/Documents";
+import Notifications from "./pages/Notifications";
 import NewsArticle from "./pages/NewsArticle";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/dashboard/calendar" element={<CalendarPage />} />
           <Route path="/dashboard/support" element={<Support />} />
           <Route path="/dashboard/documents" element={<Documents />} />
+          <Route path="/dashboard/notifications" element={<Notifications />} />
           <Route path="/dashboard/news" element={<News />} />
           <Route path="/dashboard/news/:id" element={<NewsArticle />} />
           
