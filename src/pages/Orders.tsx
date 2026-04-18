@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Icon from '@/components/ui/icon';
 import CreateOrderModal from '@/components/CreateOrderModal';
+import CreateSearchModal from '@/components/CreateSearchModal';
+import { MOCK_SEARCH_REQUESTS, CATEGORY_COLOR } from '@/data/searchRequests';
+import type { SearchRequest } from '@/data/searchRequests';
 
 const PERFORMER_TYPES = ['Все', 'Аниматор', 'Ведущий', 'Фокусник', 'DJ', 'Певец', 'Фотограф', 'Танцор'];
 const GENDER_OPTIONS = ['Все', 'М', 'Ж', 'Не важно'];
@@ -14,6 +16,7 @@ const SORT_OPTIONS = [
   { id: 'price_asc', label: 'Цена ↑' },
   { id: 'price_desc', label: 'Цена ↓' },
 ];
+const SEARCH_CATEGORIES = ['Все', 'Реквизит', 'Костюм', 'Оборудование', 'Декор', 'Свет/Звук', 'Другое'];
 
 export interface Order {
   id: number;
@@ -136,7 +139,6 @@ const OrderCard = ({ order, onOpenChat }: { order: Order; onOpenChat: (o: Order)
     <div
       className={`rounded-2xl border bg-card overflow-hidden transition-all duration-300 cursor-pointer group ${expanded ? 'shadow-lg ring-1 ring-primary/20' : 'hover:shadow-md hover:-translate-y-0.5'}`}
     >
-      {/* Шапка карточки */}
       <div onClick={() => setExpanded(!expanded)}>
         {order.cover && !expanded && (
           <div className="h-36 overflow-hidden">
@@ -188,11 +190,9 @@ const OrderCard = ({ order, onOpenChat }: { order: Order; onOpenChat: (o: Order)
         </div>
       </div>
 
-      {/* Развёрнутый контент */}
       {expanded && (
         <div className="px-4 pb-4 space-y-4 animate-fade-in">
           <div className="h-px bg-border" />
-
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="space-y-0.5">
               <p className="text-xs text-muted-foreground">Адрес</p>
@@ -211,12 +211,10 @@ const OrderCard = ({ order, onOpenChat }: { order: Order; onOpenChat: (o: Order)
               <p className="font-medium">{order.performerType} · {order.gender}</p>
             </div>
           </div>
-
           <div>
             <p className="text-xs text-muted-foreground mb-1">Описание</p>
             <p className="text-sm leading-relaxed text-foreground/80">{order.description}</p>
           </div>
-
           <div className="flex items-center justify-between pt-2">
             <div className="flex items-center gap-2">
               <Avatar className="w-8 h-8">
@@ -257,7 +255,6 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
       <div className="bg-background rounded-2xl shadow-2xl w-full max-w-md flex flex-col" style={{ maxHeight: '85vh' }}>
-        {/* Шапка чата */}
         <div className="flex items-center gap-3 p-4 border-b">
           <Avatar className="w-9 h-9">
             <AvatarFallback>{order.author.name[0]}</AvatarFallback>
@@ -271,7 +268,6 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
           </button>
         </div>
 
-        {/* Плашка заказа внутри чата */}
         <div className="mx-3 mt-3 rounded-xl border bg-muted/40 overflow-hidden">
           {order.cover && (
             <img src={order.cover} alt={order.title} className="w-full h-24 object-cover" />
@@ -290,10 +286,7 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
               <p className="font-bold text-primary shrink-0">{order.price.toLocaleString()} ₽</p>
             </div>
             {!accepted ? (
-              <Button
-                className="w-full gradient-purple text-white"
-                onClick={() => setAccepted(true)}
-              >
+              <Button className="w-full gradient-purple text-white" onClick={() => setAccepted(true)}>
                 <Icon name="CheckCircle" size={15} className="mr-2" />
                 Принять заказ
               </Button>
@@ -306,7 +299,6 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
           </div>
         </div>
 
-        {/* Сообщения */}
         <div className="flex-1 overflow-y-auto p-3 space-y-2 min-h-0">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.from === 'me' ? 'justify-end' : 'justify-start'}`}>
@@ -323,7 +315,6 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
           ))}
         </div>
 
-        {/* Поле ввода */}
         <div className="p-3 border-t flex gap-2">
           <input
             className="flex-1 bg-muted rounded-full px-4 py-2 text-sm outline-none"
@@ -344,15 +335,118 @@ const OrderChatModal = ({ order, onClose }: { order: Order; onClose: () => void 
   );
 };
 
+/* ──────────────── SearchRequestCard ──────────────── */
+const SearchRequestCard = ({ req }: { req: SearchRequest }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div
+      onClick={() => setExpanded(!expanded)}
+      className={`rounded-2xl border bg-card overflow-hidden transition-all duration-300 cursor-pointer group
+        ${expanded ? 'shadow-lg ring-1 ring-orange-400/30' : 'hover:shadow-md hover:-translate-y-0.5'}`}
+    >
+      <div className={`p-4 ${expanded ? 'pb-2' : ''}`}>
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1.5">
+              <Badge className={`text-xs font-medium border-0 ${CATEGORY_COLOR[req.category] || 'bg-muted text-muted-foreground'}`}>
+                {req.category}
+              </Badge>
+              <span className="text-[11px] text-muted-foreground flex items-center gap-0.5">
+                <Icon name="Timer" size={11} />
+                до {req.deadline}
+              </span>
+            </div>
+            <h3 className="font-semibold text-base leading-tight">{req.title}</h3>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Icon name="Calendar" size={13} />
+                {req.date}
+              </span>
+              <span className="flex items-center gap-1">
+                <Icon name="MapPin" size={13} />
+                {req.city}
+              </span>
+              {req.budget && (
+                <span className="flex items-center gap-1">
+                  <Icon name="Wallet" size={13} />
+                  до {req.budget.toLocaleString()} ₽
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="shrink-0 flex flex-col items-end gap-1">
+            {req.budget ? (
+              <p className="text-xl font-bold text-orange-500">{req.budget.toLocaleString()} ₽</p>
+            ) : (
+              <p className="text-sm text-muted-foreground font-medium">Бюджет<br/>не указан</p>
+            )}
+            <Icon
+              name={expanded ? 'ChevronUp' : 'ChevronDown'}
+              size={18}
+              className="text-muted-foreground"
+            />
+          </div>
+        </div>
+      </div>
+
+      {expanded && (
+        <div className="px-4 pb-4 space-y-4 animate-fade-in" onClick={e => e.stopPropagation()}>
+          <div className="h-px bg-border" />
+
+          {req.description && (
+            <div>
+              <p className="text-xs text-muted-foreground mb-1">Подробности</p>
+              <p className="text-sm leading-relaxed text-foreground/80">{req.description}</p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="space-y-0.5">
+              <p className="text-xs text-muted-foreground">Дата / период</p>
+              <p className="font-medium">{req.date}</p>
+            </div>
+            <div className="space-y-0.5">
+              <p className="text-xs text-muted-foreground">Актуально до</p>
+              <p className="font-medium">{req.deadline}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center gap-2">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="text-xs">{req.author.name[0]}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-xs font-medium">{req.author.name}</p>
+                <p className="text-xs text-muted-foreground">Разместил заявку</p>
+              </div>
+            </div>
+            <Button className="gradient-orange text-white border-0 hover:opacity-90">
+              <Icon name="MessageCircle" size={15} className="mr-2" />
+              Откликнуться
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ──────────────── Main Page ──────────────── */
 const Orders = () => {
+  const [tab, setTab] = useState<'orders' | 'search'>('orders');
   const [orders, setOrders] = useState<Order[]>(MOCK_ORDERS);
+  const [searchRequests, setSearchRequests] = useState<SearchRequest[]>(MOCK_SEARCH_REQUESTS);
   const [filterType, setFilterType] = useState('Все');
   const [filterGender, setFilterGender] = useState('Все');
   const [sortBy, setSortBy] = useState('date');
+  const [searchCategory, setSearchCategory] = useState('Все');
   const [chatOrder, setChatOrder] = useState<Order | null>(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [showCreateSearch, setShowCreateSearch] = useState(false);
 
-  const filtered = orders
+  const filteredOrders = orders
     .filter((o) => filterType === 'Все' || o.performerType === filterType)
     .filter((o) => filterGender === 'Все' || o.gender === filterGender || (filterGender === 'Не важно' && o.gender === 'Не важно'))
     .sort((a, b) => {
@@ -361,81 +455,187 @@ const Orders = () => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
+  const filteredSearch = searchRequests
+    .filter(r => searchCategory === 'Все' || r.category === searchCategory)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
   return (
     <DashboardLayout>
       <div className="max-w-2xl animate-fade-in space-y-6">
-        <div className="flex items-center justify-between">
+
+        {/* ── Заголовок + кнопка ── */}
+        <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-3xl font-bold mb-1">Заказы</h2>
-            <p className="text-muted-foreground">Открытые заявки от организаторов мероприятий</p>
+            <h2 className="text-3xl font-bold mb-1">
+              {tab === 'orders' ? 'Заказы' : 'Ищейка'}
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              {tab === 'orders'
+                ? 'Открытые заявки от организаторов мероприятий'
+                : 'Заявки на поиск реквизита, костюмов и оборудования'}
+            </p>
           </div>
-          <Button className="gradient-purple text-white" onClick={() => setShowCreate(true)}>
-            <Icon name="Plus" size={16} className="mr-2" />
-            Создать заказ
-          </Button>
-        </div>
-
-        {/* Фильтры */}
-        <div className="space-y-3">
-          {/* Тип исполнителя */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {PERFORMER_TYPES.map((t) => (
-              <button
-                key={t}
-                onClick={() => setFilterType(t)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                  filterType === t
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background text-muted-foreground border-border hover:border-primary/40'
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-
-          {/* Пол + сортировка */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-1 bg-muted rounded-full p-1">
-              {GENDER_OPTIONS.map((g) => (
-                <button
-                  key={g}
-                  onClick={() => setFilterGender(g)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                    filterGender === g ? 'bg-white shadow text-foreground' : 'text-muted-foreground'
-                  }`}
-                >
-                  {g}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-1 bg-muted rounded-full p-1 ml-auto">
-              {SORT_OPTIONS.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => setSortBy(s.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                    sortBy === s.id ? 'bg-white shadow text-foreground' : 'text-muted-foreground'
-                  }`}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Список заказов */}
-        <div className="space-y-3">
-          {filtered.length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground">
-              Нет заказов по выбранным фильтрам
-            </div>
+          {tab === 'orders' ? (
+            <Button className="gradient-purple text-white shrink-0" onClick={() => setShowCreate(true)}>
+              <Icon name="Plus" size={16} className="mr-2" />
+              Создать заказ
+            </Button>
           ) : (
-            filtered.map((order) => (
-              <OrderCard key={order.id} order={order} onOpenChat={setChatOrder} />
-            ))
+            <Button
+              className="gradient-orange text-white border-0 hover:opacity-90 shrink-0"
+              onClick={() => setShowCreateSearch(true)}
+            >
+              <Icon name="Search" size={16} className="mr-2" />
+              Ищу реквизит
+            </Button>
           )}
+        </div>
+
+        {/* ── Таб-переключатель ── */}
+        <div className="relative flex bg-muted rounded-2xl p-1 gap-1">
+          {/* Скользящий индикатор */}
+          <div
+            className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-xl transition-all duration-300 ease-in-out shadow-sm
+              ${tab === 'orders' ? 'left-1 gradient-purple' : 'left-[calc(50%+2px)] gradient-orange'}`}
+          />
+          <button
+            onClick={() => setTab('orders')}
+            className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold transition-colors duration-200
+              ${tab === 'orders' ? 'text-white' : 'text-muted-foreground hover:text-foreground'}`}
+          >
+            <span>🎭</span>
+            Заказы
+            <Badge className={`text-[10px] px-1.5 h-4 border-0 ${tab === 'orders' ? 'bg-white/20 text-white' : 'bg-muted-foreground/20 text-muted-foreground'}`}>
+              {filteredOrders.length}
+            </Badge>
+          </button>
+          <button
+            onClick={() => setTab('search')}
+            className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold transition-colors duration-200
+              ${tab === 'search' ? 'text-white' : 'text-muted-foreground hover:text-foreground'}`}
+          >
+            <span>🎒</span>
+            Ищейка
+            <Badge className={`text-[10px] px-1.5 h-4 border-0 ${tab === 'search' ? 'bg-white/20 text-white' : 'bg-muted-foreground/20 text-muted-foreground'}`}>
+              {filteredSearch.length}
+            </Badge>
+          </button>
+        </div>
+
+        {/* ── Контент с fade-переходом ── */}
+        <div className="relative">
+
+          {/* ── Лента заказов ── */}
+          <div className={`transition-all duration-300 ${tab === 'orders' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none absolute inset-0'}`}>
+            <div className="space-y-4">
+              {/* Фильтры */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {PERFORMER_TYPES.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setFilterType(t)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                        filterType === t
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background text-muted-foreground border-border hover:border-primary/40'
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-1 bg-muted rounded-full p-1">
+                    {GENDER_OPTIONS.map((g) => (
+                      <button
+                        key={g}
+                        onClick={() => setFilterGender(g)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                          filterGender === g ? 'bg-white shadow text-foreground' : 'text-muted-foreground'
+                        }`}
+                      >
+                        {g}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1 bg-muted rounded-full p-1 ml-auto">
+                    {SORT_OPTIONS.map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => setSortBy(s.id)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                          sortBy === s.id ? 'bg-white shadow text-foreground' : 'text-muted-foreground'
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {filteredOrders.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    Нет заказов по выбранным фильтрам
+                  </div>
+                ) : (
+                  filteredOrders.map((order) => (
+                    <OrderCard key={order.id} order={order} onOpenChat={setChatOrder} />
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Лента Ищейки ── */}
+          <div className={`transition-all duration-300 ${tab === 'search' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none absolute inset-0'}`}>
+            <div className="space-y-4">
+              {/* Описание-баннер */}
+              <div className="rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200/60 p-4 flex items-start gap-3">
+                <div className="text-2xl mt-0.5">🎒</div>
+                <div>
+                  <p className="font-semibold text-sm text-orange-800">Что такое Ищейка?</p>
+                  <p className="text-xs text-orange-700/80 mt-0.5 leading-relaxed">
+                    Здесь организаторы ищут реквизит, костюмы и оборудование в аренду.
+                    Если у вас есть что предложить — откликайтесь на заявки!
+                  </p>
+                </div>
+              </div>
+
+              {/* Фильтр по категории */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {SEARCH_CATEGORIES.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setSearchCategory(c)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      searchCategory === c
+                        ? 'gradient-orange text-white border-transparent'
+                        : 'bg-background text-muted-foreground border-border hover:border-orange-300'
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+
+              <div className="space-y-3">
+                {filteredSearch.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <span className="text-3xl block mb-2">🔍</span>
+                    Нет заявок по выбранной категории
+                  </div>
+                ) : (
+                  filteredSearch.map(req => (
+                    <SearchRequestCard key={req.id} req={req} />
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -449,6 +649,16 @@ const Orders = () => {
           onSubmit={(order) => {
             setOrders((prev) => [order, ...prev]);
             setShowCreate(false);
+          }}
+        />
+      )}
+
+      {showCreateSearch && (
+        <CreateSearchModal
+          onClose={() => setShowCreateSearch(false)}
+          onSubmit={(req) => {
+            setSearchRequests(prev => [req, ...prev]);
+            setShowCreateSearch(false);
           }}
         />
       )}
