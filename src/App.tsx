@@ -21,6 +21,7 @@ import Documents from "./pages/Documents";
 import Notifications from "./pages/Notifications";
 import NewsArticle from "./pages/NewsArticle";
 import NotFound from "./pages/NotFound";
+import LeaveReview from "./pages/LeaveReview";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,8 @@ const App = () => (
           <Route path="/dashboard/news" element={<News />} />
           <Route path="/dashboard/news/:id" element={<NewsArticle />} />
           
+          <Route path="/leave-review" element={<LeaveReview />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

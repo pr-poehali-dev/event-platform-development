@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,7 @@ const StarRating = ({ rating }: { rating: number }) => (
 );
 
 const ArtistProfile = () => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [selectedBg, setSelectedBg] = useState('orange');
   const [selectedRoles, setSelectedRoles] = useState(['Аниматор', 'Ведущий']);
@@ -146,6 +148,23 @@ const ArtistProfile = () => {
           <Badge variant="outline" className="ml-auto">5 лет опыта</Badge>
           <Badge variant="outline">Москва</Badge>
         </div>
+
+        {/* Кнопка — оставить отзыв */}
+        <button
+          onClick={() => navigate('/leave-review')}
+          className="w-full flex items-center justify-between px-5 py-4 rounded-2xl border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 transition-all group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm" style={{ background: 'linear-gradient(135deg, #FF7A18, #ffb347)' }}>
+              ⭐
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-semibold text-gray-800">Оставить отзыв</p>
+              <p className="text-xs text-gray-400">Расскажите, как прошло мероприятие</p>
+            </div>
+          </div>
+          <Icon name="ChevronRight" size={18} className="text-orange-400 group-hover:translate-x-0.5 transition-transform" />
+        </button>
 
         {/* Табы */}
         <Tabs defaultValue="about" className="space-y-4">
